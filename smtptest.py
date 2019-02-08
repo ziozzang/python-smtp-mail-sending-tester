@@ -54,17 +54,18 @@ if len(args) != 3:
 
 fromaddr = args[0]
 toaddr = args[1]
-serveraddr = args[2]	
+serveraddr = args[2]
 	
 now = strftime("%Y-%m-%d %H:%M:%S")
 
+toaddr_arr = [x.strip() for x in toaddr.split(',')]
 msg = "From: %s\r\nTo: %s\r\nSubject: Test Message from smtptest at %s\r\n\r\nTest message from the smtptest tool sent at %s" % (fromaddr, toaddr, now, now)
 
 if options.verbose:
 	print('usetls:', options.usetls)
 	print('usessl:', options.usessl)
 	print('from address:', fromaddr)
-	print('to address:', toaddr)
+	print('to address:', toaddr_arr)
 	print('server address:', serveraddr)
 	print('server port:', options.serverport)
 	print('smtp username:', options.SMTP_USER)
@@ -86,5 +87,5 @@ server.ehlo()
 if options.usetls: server.starttls()
 server.ehlo()
 if options.SMTP_USER != "": server.login(options.SMTP_USER, options.SMTP_PASS)
-server.sendmail(fromaddr, toaddr, msg)
+server.sendmail(fromaddr, toaddr_arr, msg)
 server.quit()
